@@ -22,7 +22,7 @@ switch(menu_opcion){
     case 3:
         alert("Te irás en Bicicleta");
     break;
-    case 1:
+    case 4:
         alert("Te irás en Camión ;(");
     break; 
     default: 
