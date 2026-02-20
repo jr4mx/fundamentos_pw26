@@ -7,22 +7,29 @@ while(seguir){
         "Bienvenido a tu agenda personal \n" +
         "1. Agregar contacto \n" +
         "2. Listar contactos \n" +
-        "3. Salir"
+        "3. Eliminar contactos \n" +
+        "4. Salir"
     ));
 
     switch(opcion) {
 
         case 1:
             let nombre = prompt("Ingresa tu nombre");
-            let telefono = prompt("Ingresa tu telefono");
-            let correo = prompt("Ingresa tu correo");
             let edad = parseInt(prompt("Ingresa tu edad"));
-
-            let agenda = { nombre, telefono, correo, edad };
-
+            let telefono = prompt("Ingresa tu telefono");
+            let id_contacto=datos.length + 1;
+            let agenda = {id_contacto, nombre, edad, telefono };
+            agenda.id_contacto = id_contacto;
+            agenda.nombre = nombre;
+            agenda.edad = edad;
+            agenda.telefono = telefono;
+   
             datos.push(agenda);
+            
+            console.log(datos);
 
             alert("Contacto agregado correctamente");
+            console.table(datos);
             break;
 
         case 2:
@@ -42,7 +49,7 @@ while(seguir){
             }
             break;
 
-        case 3:
+        case 4:
             if(confirm("¿Deseas salir?")){
                 seguir = false;
             }
