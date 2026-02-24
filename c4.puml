@@ -1,0 +1,47 @@
+@startuml Component
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+title C4 - Component Diagram (API Indicadores)
+
+Container(spa, "React SPA", "React", "Cliente HTTP")
+ContainerDb(database, "SICEUC/DWH", "SQL Server", "Fuente de datos")
+
+Container_Boundary(apiSys, "siceuc-indicadores-api") {
+
+  Component(schoolController, "SchoolController", "ASP.NET Controller", "GET /api/School/GetAll")
+  Component(careerController, "CareerController", "ASP.NET Controller", "GET /api/Career/GetAll")
+
+  Component(currentController, "CurrentEnrollmentController", "ASP.NET Controller",
+    "GET /api/CurrentEnrollment/Get; GET /api/CurrentEnrollment/Export")
+
+  Component(officialController, "OfficialEnrollmentController", "ASP.NET Controller", "GET /api/OfficialEnrollment/Get")
+
+  Component(queryService, "QueryService", "Service Layer", "Aplica Filters[] y Columns[] y arma consultas")
+  Component(exportService, "ExportService", "Service Layer", "Genera archivo (binary stream) para Export")
+
+  Component(repository, "IndicatorsRepository", "Repository", "Acceso a datos (Views/SP/SQL)")
+
+  Component(apiResponse, "ApiResponse<T>", "Model", "Envelope: isSuccessful, data, error")
+  Component(errorResponse, "ErrorResponse", "Model", "errorCode, message, validationErrors[]")
+}
+
+Rel(spa, schoolController, "GET", "HTTPS/JSON")
+Rel(spa, careerController, "GET", "HTTPS/JSON")
+Rel(spa, currentController, "GET (consulta/export)", "HTTPS/JSON/Blob")
+Rel(spa, officialController, "GET", "HTTPS/JSON")
+
+Rel(schoolController, queryService, "Usa")
+Rel(careerController, queryService, "Usa")
+Rel(currentController, queryService, "Usa")
+Rel(currentController, exportService, "Usa")
+Rel(officialController, queryService, "Usa")
+
+Rel(queryService, repository, "Consulta")
+Rel(repository, database, "Lee", "SQL")
+
+Rel(queryService, apiResponse, "Retorna")
+Rel(queryService, errorResponse, "En error")
+Rel(exportService, errorResponse, "En error")
+
+@enduml
